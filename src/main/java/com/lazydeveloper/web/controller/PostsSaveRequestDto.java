@@ -50,4 +50,8 @@ public class PostsSaveRequestDto {
 		this.author = author;
 	}
 
+	@Override
+	public String toString() {
+		return "PostsSaveRequestDto [title=" + title + ", content=" + content + ", author=" + author + "]";
+	}
 }

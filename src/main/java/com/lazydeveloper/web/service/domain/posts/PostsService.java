@@ -1,5 +1,8 @@
 package com.lazydeveloper.web.service.domain.posts;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +32,17 @@ public class PostsService {
 	@Autowired
 	private PostsRepository postsRepository;
 	
+	public PostsService() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	@Transactional
 	public Long save(PostsSaveRequestDto dto) {
 		return postsRepository.save(dto.toEntity()).getId();
+	}
+	
+	@Transactional
+	public List<PostsMainResponseDto> finaAllDesc() {
+		return postsRepository.finadAllDesc().map(PostsMainResponseDto::new).collect(Collectors.toList());
 	}
 }

@@ -1,4 +1,27 @@
+#H2에서 시작시 자동으로 기본 데이터를 넣도록 파일을 수정
 spring:
+  profiles:
+    active: local # 실행 기본 환경을 선택
+
+#Tip) 
+#application.yml 에서 --- 를 기준으로 상단은 공통 영역이며, 하단이 각 profile의 설정 영역입니다. 
+#공통영역의 값은 각 profile환경에 동일한 설정이 있으면 무시되고, 없으면 공통영역의 설정값이 사용됩니다. 
+#그렇다보니 공통영역에 설정값을 넣는것에 굉장히 주의가 필요합니다. 
+#만약 공통영역에 jpa.hibernate.ddl-auto:create-drop가 있고 운영 profile에 해당 설정값이 없다면 운영환경에서 배포시 모든 테이블이 drop -> create 됩니다. 
+#이때문에 datasource, table 등과 같은 옵션들은 공통영역엔 두지 않고 각 profile마다 별도로 두는것을 추천합니다.
+
+---
+spring:
+  profiles: local
+  datasource:
+    data: classpath:data-h2.sql #시작할 때 실행시킬 script
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+      use-new-id-generator-mappings: false  #GeneratedId 가 spring-boot 2.0에서는 hibernate 5.2에서의 변경 부분때문에 정상적으로 동작하지 않는다. 따라서 false를 해야 동작함.
+      # 또는 Entity class에서 id의 생성 전략을 변경한다.
+      
   h2:
     console:
       enabled: true
